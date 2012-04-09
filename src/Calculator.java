@@ -2,31 +2,39 @@ package MorgageCalculator;
 
 Public class Calculator
 {
-	//TODO: EVERYTHING!!!
-	public double calculateMonthlyPayment(double downAmount, double financedAmount, double interestRate, double termLength)
+	//TODO: comments
+	final int NUMMONTHS = 12;
+
+	public double calculateMonthlyPayment(double downAmount, double financedAmount, double yearlyInterestRate, double termLength)
 	{
-		return 0.0;
+		double monthlyInterestRate = yearlyInterestRate/NUMMONTHS;
+		double numMonthlyPayments = termLength*NUMMONTHS;
+
+		return financedAmount*(monthlyInterestRate)/(1 - Math.pow((1 + monthlyInterestRate), -numMonthlyPayments));
 	}
 
-	public double calculateTotalInterest(double monthlyPayment, double termLength)
+	public double calculateTotalPayment(double downAmount, double monthlyPayment, double termLength)
 	{
-		return 0.0;
-	}
+		double numMonthlyPayments = termLength*NUMMONTHS;
 
-	public double calculateTotalInterest(double downAmount, double financedAmount, double interestRate, double termLength)
-	{
-		double monthlyPayment = calculateMonthlyPayment(downAmount, financedAmount, interestRate, termLength);
-		return calculateTotalInterest(monthlyPayment, termLength);
-	}
-
-	public double calculateTotalPayment(double fromInterest, double fromDown)
-	{
-		return 0.0;
+		return monthlyPayment*numMonthlyPayments + downAmount;
 	}
 
 	public double calculateTotalPayment(double downAmount, double financedAmount, double interestRate, double termLength)
 	{
-		double fromInterest = calculateTotalInterest(downAmount, financedAmount, interestRate, termLength);
-		return calculateTotalPayment(fromInterest, downAmount);
+		double monthlyPayment = calculateMonthlyPayment(downAmount, financedAmount, interestRate, termLength);
+		return calculateTotalInterest(downAmount, monthlyPayment, termLength);
+	}
+
+	public double calculateTotalInterest(double totalPayment, double fromDown)
+	{
+		return totalPayment - fromInterest;
+	}
+
+	public double calculateTotalInterest(double downAmount, double financedAmount, double interestRate, double termLength)
+	{
+		double totalPayment = calculateTotalPayment(downAmount, financedAmount, interestRate, termLength);
+
+		return calculateTotalInterest(totalPayment, downAmount);
 	}
 }
