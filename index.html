@@ -1,0 +1,25 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+  <TITLE>Mortgage Calculator</TITLE>
+</HEAD>
+
+<BODY BGCOLOR="#C9C9C9">
+<H1 ALIGN="CENTER">Calculate your Payments!</H1>
+
+<CENTER>
+<FORM ACTION="/Mortgage_Server/MortgageServlet" METHOD=POST>
+  Home Price:
+  <INPUT TYPE="TEXT" NAME="price"/>dollars<BR>
+  Amount Down:
+  <INPUT TYPE="TEXT" NAME="down"/>dollars<BR>
+  Interest Rate:
+  <INPUT TYPE="TEXT" NAME="rate"/>%<BR>
+  Loan Term:
+  <INPUT TYPE="TEXT" NAME="term"/>years<BR>
+  <INPUT TYPE="SUBMIT" VALUE="Calculate">
+</FORM>
+</CENTER>
+
+</BODY>
+</HTML>
