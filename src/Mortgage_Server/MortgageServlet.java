@@ -34,13 +34,13 @@ public class MortgageServlet extends HttpServlet
     {      
     	try
     	{
-			response.sendRedirect("/Mortgage_Servlet/WebContent/index.html");		
+		response.sendRedirect("/Mortgage_Servlet/WebContent/index.html");		
     	}
     	catch(IOException e)
     	{
     		System.err.println("error on redirect at:");//print a message
-			e.printStackTrace();// and stack trace
-		}
+		e.printStackTrace();// and stack trace
+	}
     }
 
     /**
