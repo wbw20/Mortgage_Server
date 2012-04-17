@@ -9,45 +9,63 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Servlet implementation class MortgageServlet
+ * 
+ * @author Will Wettersten
  */
-public class MortgageServlet extends HttpServlet {
+public class MortgageServlet extends HttpServlet
+{
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MortgageServlet() {
+    public MortgageServlet()
+    {
         super();
     }
 
+    /**
+     * Processes get requests.  Currently redirects back to index.
+     * 
+     * @param request	the servlet request from the client
+     * @param response	what we are goint to be sending the client
+     */
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
     {      
     	try
     	{
 			response.sendRedirect("/Mortgage_Servlet/WebContent/index.html");		
     	}
-    	catch(IOException e1)
+    	catch(IOException e)
     	{
-    		System.err.println("error on redirect");
-			e1.printStackTrace();
+    		System.err.println("error on redirect at:");//print a message
+			e.printStackTrace();// and stack trace
 		}
     }
 
+    /**
+     * Processes post requests.  Here we get several parameters from an html form and
+     * calculate mortgage statists from them, serving the client an html page with the
+     * statistics we calculated.
+     * 
+     * @param request	the servlet request from the client
+     * @param response	what we are goint to be sending the client
+     */
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
     {
-		double price = Double.parseDouble(request.getParameterValues("price")[0]);
-		double down = Double.parseDouble(request.getParameterValues("down")[0]);
-		double rate = Double.parseDouble(request.getParameterValues("rate")[0]);
-		double term = Double.parseDouble(request.getParameterValues("term")[0]);
+		double price = Double.parseDouble(request.getParameterValues("price")[0]);//price in USD
+		double down = Double.parseDouble(request.getParameterValues("down")[0]);//amount down in USD
+		double rate = Double.parseDouble(request.getParameterValues("rate")[0]);//yearly interest rate
+		double term = Double.parseDouble(request.getParameterValues("term")[0]);//term in years
 		
 		double financed = price-down;//whatever wasn't down is financed
-		rate = rate/100;//percent to double
+		rate = rate/100;//percent to decimal
 		
 		double monthlyPayment = Calculator.calculateMonthlyPayment(down, financed, rate, term);
 		double totalPayment = Calculator.calculateTotalPayment(down, monthlyPayment, term);
 		double totalInterest = Calculator.calculateTotalInterest(totalPayment, price);
 		
-        try
+        try//print a simple html resposne
         { 
             PrintWriter out = response.getWriter();
 
@@ -64,13 +82,21 @@ public class MortgageServlet extends HttpServlet {
             out.println("</body>");
             out.println("</html>");
             out.close();
-    }
-    catch(IOException e)
-    {
-            System.err.print("an error has occured on POST");
-    }
+        }
+        catch(IOException e)
+    	{
+    		System.err.println("error on POST at:");//print a message
+			e.printStackTrace();// and stack trace
+		}
     }
     
+    /**
+     * This function uses java int and double precision differences to round a double
+     * to two places after the decimal point.
+     * 
+     * @param d	the number to be rounded
+     * @return	the rounded value
+     */
     private double roundTwoPlaces(double d)
     {
     	int tempInt = (int)(d*100);
